@@ -24,6 +24,7 @@ import {
 import { easing } from "maath";
 
 //components
+import useDevice from "./utils/useDevice";
 import SectionTypography from "./components/SectionTypography";
 import Images from "./components/Images";
 import ExperienceSection from "./components/ExperienceSection";
@@ -90,14 +91,55 @@ export default function FluidGlass({
 
 // Scene content that has access to useThree hooks
 function SceneContent() {
-    
+    const { isMobile, isTablet } = useDevice();
+
+    // device-specific multipliers for image positioning
+    const devicePosFactors = isMobile
+        ? { x: 0.47, y: 1, z: 1 }
+        : isTablet
+            ? { x: 0.8, y: 1, z: 1 }
+            : { x: 1, y: 1, z: 1 };
+
+    // base images defined for desktop mapped to device-aware positions
+    const baseImages = [
+        {
+            position: [-2, 0, 3],
+            scale: 3,
+            url: "assets/images/canada.jpg"
+        },
+        {
+            position: [2, 0, 3],
+            scale: 3,
+            url: "assets/images/golconda.png"
+        },
+        {
+            position: [0, -4.3, 6],
+            // ensure tuple [w,h]
+            scale: [4, 2] as [number, number],
+            url: "assets/images/uiuccampus.jpg"
+        },
+    ];
+
+    const imagesForDevice = baseImages.map(img => {
+        const pos = [
+            (img.position[0] as number) * devicePosFactors.x,
+            (img.position[1] as number) * devicePosFactors.y,
+            (img.position[2] as number) * devicePosFactors.z,
+        ] as [number, number, number];
+
+        return {
+            ...img,
+            position: pos,
+        };
+    });
+
     return (
         <Scroll>
             {/* Add some lighting for 3D materials */}
             <ambientLight intensity={0.5} />
             <pointLight position={[10, 10, 10]} intensity={1} />
             <pointLight position={[-10, -10, 10]} intensity={0.5} />
-            
+
             <SectionTypography text="Aruv Dand" size="large" position={[0, 0, 12]} />
             <SectionTypography text="About Me" size="medium" position={[0, -2, 8]} />
             <SectionTypography text={[
@@ -106,14 +148,14 @@ function SceneContent() {
                 "Computer Science and a certificate in data science.",
                 "I love finding problems and learning while trying to solve them."
             ]} size="small" position={[0, -2.4, 6]} />
-            
+
             {/* University logo positioned to the right of the description */}
-            
+
             <SectionTypography text="Experience" size="medium" position={[0, -5.8, 8]} />
-            
+
             {/* 3D Experience Section with interactive buttons and cards */}
             <ExperienceSection position={[0, -7.2, 6]} />
-            
+
             <SectionTypography text="Skills" size="medium" position={[0, -10, 8]} />
             <SkillsCarousel3D position={[0, -11, 5]} speed={1} />
 
@@ -122,25 +164,7 @@ function SceneContent() {
             {/* 3D Projects Gallery with interactive cards */}
             <ProjectsGallery3D position={[0, -14, 6]} />
 
-            <Images
-                images={[
-                    {
-                        position: [-2, 0, 3],
-                        scale: 3,
-                        url: "assets/images/canada.jpg"
-                    },
-                    {
-                        position: [2, 0, 3],
-                        scale: 3,
-                        url: "assets/images/golconda.png"
-                    },
-                    {
-                        position: [0, -4.3, 6],
-                        scale: [4,2],
-                        url: "assets/images/uiuccampus.jpg"
-                    },
-                ]}
-            />
+            <Images images={imagesForDevice} />
             {/* Html overlay positioned below Typography and Images in world space */}
             {/* <Html position={[0, -8, 4]} center>
                 <Sections />
@@ -321,7 +345,7 @@ function NavItems({ items }: { items: NavItem[] }) {
     };
 
     const DEVICE = {
-        mobile: { max: 639, spacing: 0.15, fontSize: 0.025 },
+        mobile: { max: 639, spacing: 0.14, fontSize: 0.022 },
         tablet: { max: 1023, spacing: 0.24, fontSize: 0.045 },
         desktop: { max: Infinity, spacing: 0.3, fontSize: 0.045 },
     };
@@ -361,11 +385,11 @@ function NavItems({ items }: { items: NavItem[] }) {
         // link.startsWith("#")
         //     ? (window.location.hash = link)
         //     : (window.location.href = link);
-        
+
         // Set clicked state for visual feedback
         setClickedIndex(index);
         setTimeout(() => setClickedIndex(null), 300); // Reset after 300ms
-        
+
         const offset = sectionOffsets[label];
         if (offset !== undefined) {
             scroll.el.scrollTo({
@@ -380,7 +404,7 @@ function NavItems({ items }: { items: NavItem[] }) {
             {items.map(({ label }, index) => {
                 const isHovered = hoveredIndex === index;
                 const isClicked = clickedIndex === index;
-                
+
                 return (
                     <Text
                         key={label}

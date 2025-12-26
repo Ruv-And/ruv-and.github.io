@@ -2,6 +2,7 @@ import * as THREE from "three";
 import { useRef } from "react";
 import { useFrame, useThree } from "@react-three/fiber";
 import { useScroll, Image } from "@react-three/drei";
+import useDevice from "../utils/useDevice";
 
 // Type definitions
 interface ZoomMaterial extends THREE.Material {
@@ -26,6 +27,7 @@ export default function Images({ images }: ImagesProps = {}) {
     const group = useRef<ZoomGroup>(null!);
     const data = useScroll();
     const { height } = useThree((s) => s.viewport);
+    const { isMobile, isTablet } = useDevice();
 
     // Default images if none provided
     const defaultImages: ImageData[] = [
@@ -76,14 +78,31 @@ export default function Images({ images }: ImagesProps = {}) {
 
     return (
         <group ref={group}>
-            {imageData.map((image, index) => (
-                <Image
-                    key={index}
-                    position={image.position}
-                    scale={image.scale}
-                    url={image.url}
-                />
-            ))}
+            {imageData.map((image, index) => {
+                // apply device scale factor
+                const deviceScale = isMobile ? 0.5 : isTablet ? 0.8 : 1;
+
+                // compute scale prop (can be number or [w,h])
+                const scaleProp = Array.isArray(image.scale)
+                    ? (image.scale as [number, number]).map((s) => s * deviceScale) as [number, number]
+                    : (image.scale as number) * deviceScale;
+
+                // adjust position slightly on mobile to keep layout compact
+                const positionProp: [number, number, number] = [
+                    image.position[0] * (isMobile ? 0.9 : 1),
+                    (image.position[1] as number) * (isMobile ? 0.9 : 1),
+                    image.position[2],
+                ];
+
+                return (
+                    <Image
+                        key={index}
+                        position={positionProp}
+                        scale={scaleProp}
+                        url={image.url}
+                    />
+                );
+            })}
         </group>
     );
 }
