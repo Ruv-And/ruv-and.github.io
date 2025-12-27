@@ -5,6 +5,12 @@ import ExperienceList from './components/ExperienceList'
 import ProjectCard from './components/ProjectCard'
 import { useHash } from './hooks/useHash'
 
+declare global {
+  interface Window {
+    gtag?: (command: 'event' | 'config' | 'js' | 'set', ...args: any[]) => void;
+  }
+}
+
 function GithubIcon() {
   return (
     <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
@@ -107,18 +113,40 @@ function App() {
   const dockItems: DockItemData[] = [
     {
       icon: <HomeIcon />, label: 'Home', onClick: () => {
+        window.gtag?.('event', 'dock_click', {
+          item_name: 'Home',
+          click_location: 'dock'
+        });
         navigate('home')
         window.scrollTo({ top: 0, behavior: 'smooth' })
       }
     },
     {
-      icon: <GithubIcon />, label: 'GitHub', onClick: () => window.open('https://github.com/Ruv-And', '_blank', 'noreferrer')
+      icon: <GithubIcon />, label: 'GitHub', onClick: () => {
+        window.gtag?.('event', 'dock_click', {
+          item_name: 'GitHub',
+          click_location: 'dock',
+          outbound: true
+        });
+        window.open('https://github.com/Ruv-And', '_blank', 'noreferrer')
+      }
     },
     {
-      icon: <LinkedinIcon />, label: 'LinkedIn', onClick: () => window.open('https://linkedin.com/in/aruv-dand', '_blank', 'noreferrer')
+      icon: <LinkedinIcon />, label: 'LinkedIn', onClick: () => {
+        window.gtag?.('event', 'dock_click', {
+          item_name: 'LinkedIn',
+          click_location: 'dock',
+          outbound: true
+        });
+        window.open('https://linkedin.com/in/aruv-dand', '_blank', 'noreferrer')
+      }
     },
     {
       icon: <ResumeIcon />, label: 'Resume', onClick: () => {
+        window.gtag?.('event', 'dock_click', {
+          item_name: 'Resume',
+          click_location: 'dock'
+        });
         navigate('resume')
         window.scrollTo({ top: 0, behavior: 'smooth' })
       }
@@ -190,6 +218,11 @@ function App() {
             </section>
 
             <ExperienceList experiences={experiences} onTitleClick={() => {
+              window.gtag?.('event', 'section_click', {
+                item_name: 'Work Experiences',
+                click_location: 'main_page',
+                destination: 'resume'
+              });
               navigate('resume')
               window.scrollTo({ top: 0, behavior: 'smooth' })
             }} />
@@ -197,6 +230,11 @@ function App() {
             <section id="projects" className="space-y-8">
               <h3 
                 onClick={() => {
+                  window.gtag?.('event', 'section_click', {
+                    item_name: 'Projects',
+                    click_location: 'main_page',
+                    destination: 'projects'
+                  });
                   navigate('projects')
                   window.scrollTo({ top: 0, behavior: 'smooth' })
                 }}
