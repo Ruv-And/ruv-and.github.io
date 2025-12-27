@@ -1,3 +1,87 @@
+.surprise-container-right {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  padding: 0 16px 0 0;
+}
+
+.surprise-spacer {
+  margin-top: 80vh;
+}
+
+.surprise-inline {
+  display: inline-flex;
+  align-items: flex-end;
+  gap: 8px;
+}
+
+.surprise-boo {
+  font-size: 10px;
+  color: #ffffff;
+  padding: 0 0 40px 0;
+}
+
+.surprise-image-static {
+  width: 96px;
+  height: 96px;
+  object-fit: contain;
+}
+@keyframes fadeInOut {
+  0% {
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  45% {
+    opacity: 1;
+  }
+  55% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+.surprise-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
+  padding: 3rem;
+  min-height: 400px;
+}
+
+.surprise-content {
+  position: relative;
+  width: 100%;
+  height: 300px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.surprise-text {
+  position: absolute;
+  font-size: 4rem;
+  font-weight: bold;
+  color: #ffffff;
+  animation: fadeInOut 6s infinite;
+}
+
+.surprise-image {
+  position: absolute;
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  animation: fadeInOut 6s infinite;
+  animation-delay: 3s;
+}
+.read-the-docs {
+  color: #888;
+}
 #root {
   /* max-width: 1280px;
   margin: 0 auto;
@@ -6,11 +90,12 @@
 }
 
 html, body, #root {
-  width: 100vw;
-  height: 100vh;
+  width: 100%;
+  min-height: 100vh;
   margin: 0;
   padding: 0;
-  overflow: hidden;
+  overflow-x: hidden;
+  overflow-y: auto;
 }
 
 
