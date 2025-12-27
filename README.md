@@ -1,3 +1,3 @@
 # React + TypeScript + Vite
 
-Personal website to show off some things, currently using Threejs
+Personal website to show off some things
