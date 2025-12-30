@@ -113,7 +113,7 @@ function App() {
   const dockItems: DockItemData[] = [
     {
       icon: <HomeIcon />, label: 'Home', onClick: () => {
-        window.gtag?.('event', 'dock_click', {
+        window.gtag?.('event', 'home', {
           item_name: 'Home',
           click_location: 'dock'
         });
@@ -123,7 +123,7 @@ function App() {
     },
     {
       icon: <GithubIcon />, label: 'GitHub', onClick: () => {
-        window.gtag?.('event', 'dock_click', {
+        window.gtag?.('event', 'github', {
           item_name: 'GitHub',
           click_location: 'dock',
           outbound: true
@@ -133,7 +133,7 @@ function App() {
     },
     {
       icon: <LinkedinIcon />, label: 'LinkedIn', onClick: () => {
-        window.gtag?.('event', 'dock_click', {
+        window.gtag?.('event', 'linkedin', {
           item_name: 'LinkedIn',
           click_location: 'dock',
           outbound: true
@@ -143,7 +143,7 @@ function App() {
     },
     {
       icon: <ResumeIcon />, label: 'Resume', onClick: () => {
-        window.gtag?.('event', 'dock_click', {
+        window.gtag?.('event', 'resume', {
           item_name: 'Resume',
           click_location: 'dock'
         });
@@ -218,7 +218,7 @@ function App() {
             </section>
 
             <ExperienceList experiences={experiences} onTitleClick={() => {
-              window.gtag?.('event', 'section_click', {
+              window.gtag?.('event', 'work_experiences', {
                 item_name: 'Work Experiences',
                 click_location: 'main_page',
                 destination: 'resume'
@@ -230,7 +230,7 @@ function App() {
             <section id="projects" className="space-y-8">
               <h3 
                 onClick={() => {
-                  window.gtag?.('event', 'section_click', {
+                  window.gtag?.('event', 'projects', {
                     item_name: 'Projects',
                     click_location: 'main_page',
                     destination: 'projects'
