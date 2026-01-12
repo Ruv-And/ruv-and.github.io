@@ -2,6 +2,7 @@ import './App.css'
 import Dock, { type DockItemData } from './components/Dock'
 import ResumeViewer from './components/ResumeViewer'
 import ExperienceList from './components/ExperienceList'
+import ProjectList from './components/ProjectList'
 import ProjectCard from './components/ProjectCard'
 import { useHash } from './hooks/useHash'
 
@@ -45,6 +46,16 @@ function HomeIcon() {
   )
 }
 
+function ExternalLinkIcon() {
+  return (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden>
+      <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+      <polyline points="15 3 21 3 21 9" />
+      <line x1="10" y1="14" x2="21" y2="3" />
+    </svg>
+  )
+}
+
 interface ExperienceData {
   company: string;
   role: string;
@@ -58,6 +69,7 @@ interface ProjectData {
   title: string;
   description: string;
   technologies: string[];
+  image: string;
   githubUrl?: string;
   liveUrl?: string;
 }
@@ -91,23 +103,38 @@ function App() {
 
   const projects: ProjectData[] = [
     {
-      id: "snipiddy",
-      title: "Snipiddy",
-      description: "Sign in and enter your dietary restrictions, such as food allergies or irritating ingredients, along with any diets or price restrictions. Then, snap a photo of your menu and let an AI-powered scanner take over. Within seconds, it identifies potential allergens and offers dietary recommendations tailored to your needs, helping you make confident, informed food choices!",
-      technologies: ["TypeScript", "SQL", "Next.js", "Tailwind", "PostgreSQL"],
-    },
-    {
-      id: "mileage-masters",
-      title: "Mileage Masters",
-      description: "My team's entry for the Business Professionals of America 2023 Website Design Team competition. A used car marketplace with cross-platform functionality, advanced payment calculators, and a contact form. This earned us first place nationally.",
-      technologies: ["JavaScript", "Bootstrap", "HTML", "CSS", "Sass", "PHPMailer"],
+      id: "rba-soundboard",
+      title: "Soundboard App",
+      description: "A web app soundboard that allows users to upload video/audio clips of funny moments, add titles, and play them back with audio effects (speed and pitch modifications). I made this because I thought it would be funny to speed up and slow down funny clips of my friends.",
+      technologies: ["Java", "C++", "TypeScript", "SQL", "Springboot", "React", "PostgreSQL", "Kafka", "Docker", "FFmpeg"],
+      image: "/assets/projects/soundboard.png",
+      githubUrl: "https://github.com/Ruv-And/rbasoundboard"
     },
     {
       id: "qlearning-snake",
       title: "QLearning Snake Agent",
       description: "An agent trained using Q-Learning with Temporal Difference to learn how to play the classic Snake game. Also allows the user to customize the training parameters and play the game themselves.",
-      technologies: ["Python", "NumPy"],
-    }
+      technologies: ["Python", "NumPy", "Pygame"],
+      image: "/assets/projects/snake.png",
+      githubUrl: "https://github.com/Ruv-And/snake-qlearning"
+    },
+    {
+      id: "snipiddy",
+      title: "Menu Scanner App",
+      description: "Snippidy - Sign in and enter your dietary restrictions, such as food allergies or irritating ingredients, along with any diets or price restrictions. Then, snap a photo of your menu and let an AI-powered scanner take over. It identifies potential allergens and offers dietary recommendations tailored to your needs, helping you make confident, informed food choices!",
+      technologies: ["TypeScript", "SQL", "Next.js", "Tailwind", "PostgreSQL"],
+      image: "/assets/projects/snippidy.png",
+      githubUrl: "https://github.com/cs411-alawini/sp25-cs411-team070-QueryQuesters?tab=readme-ov-file",
+      // liveUrl: "https://google.com",
+    },
+    {
+      id: "mileage-masters",
+      title: "Mileage Masters",
+      description: "My team's entry for the Business Professionals of America 2023 Website Design competition. A used car marketplace with cross-platform functionality, payment calculators, a contact form, and accessibility features for colorblind and dyslexic individuals. This earned us first place nationally.",
+      technologies: ["JavaScript", "PHP", "Bootstrap", "PHPMailer", "HTML", "CSS", "Sass"],
+      image: "/assets/projects/mileagemasters.png",
+      githubUrl: "https://github.com/Ruv-And/mileage-masters"
+    },
   ]
 
   const dockItems: DockItemData[] = [
@@ -160,21 +187,31 @@ function App() {
     <div className="min-h-screen bg-gradient-to-b from-gray-400 via-gray-800 to-black">
       <Dock items={dockItems} panelHeight={68} baseItemSize={46} magnification={70} />
 
-      <main className="max-w-4xl mx-auto px-6 pt-28 pb-20">
+      <main className="max-w-4xl mx-auto px-6 pt-10 pb-20">
         {hash === 'resume' ? (
           <ResumeViewer />
         ) : hash === 'projects' ? (
           <div className="space-y-8">
-           
             <section className="space-y-8">
               <h1 className="text-5xl font-bold text-white">Projects</h1>
               <div className="grid gap-6 md:grid-cols-2">
                 {projects.map((project) => (
                   <ProjectCard
                     key={project.id}
+                    id={project.id}
                     title={project.title}
-                    description={project.description}
                     technologies={project.technologies}
+                    image={project.image}
+                    githubUrl={project.githubUrl}
+                    liveUrl={project.liveUrl}
+                    onClick={() => {
+                      window.gtag?.('event', 'project_card_click', {
+                        item_name: project.title,
+                        click_location: 'projects_page'
+                      });
+                      navigate(`project/${project.id}`)
+                      window.scrollTo({ top: 0, behavior: 'smooth' })
+                    }}
                   />
                 ))}
               </div>
@@ -182,16 +219,69 @@ function App() {
           </div>
         ) : projectDetail ? (
           <div className="space-y-8">
-            
             <section className="space-y-6">
               <h1 className="text-5xl font-bold text-white">{projectDetail.title}</h1>
+              
+              <div className="rounded-lg overflow-hidden border border-gray-700/30 bg-gray-900/50">
+                <img 
+                  src={projectDetail.image} 
+                  alt={projectDetail.title}
+                  className="w-full max-h-96 object-contain bg-gray-800"
+                />
+              </div>
+
               <p className="text-lg text-gray-300 leading-relaxed">{projectDetail.description}</p>
-              <div className="flex flex-wrap gap-2">
-                {projectDetail.technologies.map((tech, i) => (
-                  <span key={i} className="px-3 py-1 text-sm bg-indigo-500/20 text-indigo-200 rounded-full border border-indigo-500/30">
-                    {tech}
-                  </span>
-                ))}
+              
+              <div>
+                <h3 className="text-xl font-semibold text-white mb-3">Technologies</h3>
+                <div className="flex flex-wrap gap-2">
+                  {projectDetail.technologies.map((tech, i) => (
+                    <span key={i} className="px-2 py-1 text-sm bg-gray-700/50 text-gray-300 rounded">
+                      {tech}
+                    </span>
+                  ))}
+                </div>
+              </div>
+
+              <div className="flex gap-3 pt-2">
+                {projectDetail.githubUrl && (
+                  <a
+                    href={projectDetail.githubUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      window.gtag?.('event', 'github_link', {
+                        item_name: projectDetail.title,
+                        click_location: 'project_detail',
+                        outbound: true
+                      });
+                    }}
+                    className="flex items-center gap-2 px-4 py-2 bg-gray-700/50 hover:bg-gray-700 text-white rounded-lg transition-colors border border-gray-600/50"
+                  >
+                    <GithubIcon />
+                    <span>Repo</span>
+                  </a>
+                )}
+                {projectDetail.liveUrl && (
+                  <a
+                    href={projectDetail.liveUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      window.gtag?.('event', 'live_link', {
+                        item_name: projectDetail.title,
+                        click_location: 'project_detail',
+                        outbound: true
+                      });
+                    }}
+                    className="flex items-center gap-2 px-4 py-2 bg-gray-700/50 hover:bg-gray-700 text-white rounded-lg transition-colors border border-gray-600/50"
+                  >
+                    <ExternalLinkIcon />
+                    <span>Live</span>
+                  </a>
+                )}
               </div>
             </section>
           </div>
@@ -227,22 +317,23 @@ function App() {
               window.scrollTo({ top: 0, behavior: 'smooth' })
             }} />
 
-            <section id="projects" className="space-y-8">
-              <h3 
-                onClick={() => {
-                  window.gtag?.('event', 'projects', {
-                    item_name: 'Projects',
-                    click_location: 'main_page',
-                    destination: 'projects'
-                  });
-                  navigate('projects')
-                  window.scrollTo({ top: 0, behavior: 'smooth' })
-                }}
-                className="text-3xl font-bold text-white cursor-pointer transition-colors hover:text-indigo-400 underline decoration-indigo-400 decoration-2 underline-offset-4"
-              >
-                Projects
-              </h3>
-            </section>
+            <ProjectList 
+              projects={projects}
+              maxPreview={3}
+              onTitleClick={() => {
+                window.gtag?.('event', 'projects', {
+                  item_name: 'Projects',
+                  click_location: 'main_page',
+                  destination: 'projects'
+                });
+                navigate('projects')
+                window.scrollTo({ top: 0, behavior: 'smooth' })
+              }}
+              onProjectClick={(projectId) => {
+                navigate(`project/${projectId}`)
+                window.scrollTo({ top: 0, behavior: 'smooth' })
+              }}
+            />
             <section className="surprise-container-right surprise-spacer">
               <div className="surprise-inline">
                 <span className="surprise-boo">Boo!</span>

@@ -1,3 +1,11 @@
+function ChevronRightIcon() {
+  return (
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden>
+      <path d="M9 18l6-6-6-6" />
+    </svg>
+  )
+}
+
 interface ExperienceData {
   company: string;
   role: string;
@@ -14,12 +22,17 @@ interface ExperienceListProps {
 export default function ExperienceList({ experiences, onTitleClick }: ExperienceListProps) {
   return (
     <section id="experience" className="space-y-6">
-      <h3 
+      <div 
         onClick={onTitleClick}
-        className="text-3xl font-bold text-white cursor-pointer transition-colors hover:text-indigo-400 underline decoration-indigo-400 decoration-2 underline-offset-4"
+        className="flex items-center gap-3 cursor-pointer group w-fit"
       >
-        Work Experience
-      </h3>
+        <h3 className="text-3xl font-bold text-white transition-colors group-hover:text-indigo-400">
+          Work Experience
+        </h3>
+        <div className="text-indigo-400 transition-transform group-hover:translate-x-1 flex items-center">
+          <ChevronRightIcon />
+        </div>
+      </div>
       <div className="space-y-4">
         {experiences.map((exp, index) => (
           <a key={index} href={exp.link} target="_blank" rel="noopener noreferrer" className="flex items-center gap-4 bg-gray-900/50 backdrop-blur-sm rounded-lg p-4 border border-gray-700/30 hover:border-indigo-500/50 transition cursor-pointer">

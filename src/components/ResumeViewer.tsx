@@ -19,9 +19,14 @@ export default function ResumeViewer({ onBack }: ResumeViewerProps) {
             href="/Aruv_Dand_resume.pdf"
             target="_blank"
             rel="noreferrer"
-            className="text-white visited:text-white text-sm underline decoration-indigo-300 decoration-2 underline-offset-4 hover:decoration-indigo-200 hover:bg-indigo-500/15 rounded px-1 transition-colors"
+            className="text-white visited:text-white text-sm underline decoration-indigo-300 decoration-2 underline-offset-4 hover:decoration-indigo-200 hover:bg-indigo-500/15 rounded px-1 transition-colors inline-flex items-center gap-1"
         >
-          Open in new tab
+          <span>Open in new tab</span>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden className="inline">
+            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+            <polyline points="15 3 21 3 21 9" />
+            <line x1="10" y1="14" x2="21" y2="3" />
+          </svg>
         </a>
         <div className="w-full max-w-full max-w-screen overflow-x-hidden">
             <object
