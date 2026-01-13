@@ -109,6 +109,8 @@ function App() {
       technologies: ["Java", "C++", "TypeScript", "SQL", "Springboot", "React", "PostgreSQL", "Kafka", "Docker", "FFmpeg"],
       image: "/assets/projects/soundboard.png",
       githubUrl: "https://github.com/Ruv-And/rbasoundboard"
+      // liveUrl: "https://rbasound.com",
+
     },
     {
       id: "qlearning-snake",
@@ -121,11 +123,18 @@ function App() {
     {
       id: "snipiddy",
       title: "Menu Scanner App",
-      description: "Snippidy - Sign in and enter your dietary restrictions, such as food allergies or irritating ingredients, along with any diets or price restrictions. Then, snap a photo of your menu and let an AI-powered scanner take over. It identifies potential allergens and offers dietary recommendations tailored to your needs, helping you make confident, informed food choices!",
+      description: "Snippidy - Sign in and enter your dietary restrictions, such as food allergies or irritating ingredients, along with any diets or price restrictions. Then, snap a photo of your menu and let an AI-powered scanner take over. It identifies potential allergens and offers dietary recommendations tailored to your needs, helping you make confident, informed food choices! Project submission for CS411",
       technologies: ["TypeScript", "SQL", "Next.js", "Tailwind", "PostgreSQL"],
       image: "/assets/projects/snippidy.png",
       githubUrl: "https://github.com/cs411-alawini/sp25-cs411-team070-QueryQuesters?tab=readme-ov-file",
-      // liveUrl: "https://google.com",
+    },
+    {
+      id: "chatroom",
+      title: "Sports Forum",
+      description: "A reddit-like forum for sports topics featuring user login (with authentication and session state management), comments, discussion tags, and votes. Project submission for CS222",
+      technologies: ["TypeScript", "Python", "Next.js", "Flask", "SQLAlchemy", "SQLite"],
+      image: "/assets/projects/chatroom.png",
+      githubUrl: "https://github.com/CS222-UIUC/team-34-project",
     },
     {
       id: "mileage-masters",
